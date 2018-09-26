@@ -23,8 +23,6 @@
 # SOFTWARE.
 #
 
-set -Eeuxo pipefail
-
 # You must be root to run this script
 if [ "${UID}" -ne 0 ];
 then
