@@ -170,8 +170,8 @@
                     "fileUris": "[parameters('osSettings').scripts]"
                 },
                 "protectedSettings": {
-                    "storageAccountName": "[parameters('osSettings').storageName]",
-                    "storageAccountKey": "[parameters('osSettings').storageKey]",
+                    "storageAccountName": "[parameters('osSettings').storageAccess.storageName]",
+                    "storageAccountKey": "[parameters('osSettings').storageAccess.storageKey]",
                     "commandToExecute": "[concat('bash ', variables('prepDbScript'), ' && ', variables('installPgsqlScript'))]"
                 }
             }
