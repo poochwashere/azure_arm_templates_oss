@@ -14,6 +14,9 @@
         "machineSettings": {
             "type": "object"
         },
+        "dbStorageKeyVaultParams": {
+            "type": "object"
+        },
         "subnet": {
             "type": "object"
         },
@@ -44,7 +47,8 @@
         "nicName": "[concat(variables('namespace'), 'nic')]",
         "vmAdminUsername": "[parameters('commonSettings').vmAdminUsername]",
         "sshAuthKeyPath": "[concat('/home/', parameters('commonSettings').vmAdminUsername,'/.ssh/authorized_keys')]",
-        "vmCount": "[parameters('machineSettings').vmCount]"
+        "vmCount": "[parameters('machineSettings').vmCount]",
+        "environment": "[parameters('machineSettings').environment]"
     },
     "resources": [
         {
@@ -145,8 +149,33 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(variables('vmName'), copyindex(), '/install_common_deps')]",
+            "apiVersion": "2015-06-15",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyindex())]"
+            ],
+            "copy": {
+                "name": "scriptCopyLoop",
+                "count": "[variables('vmCount')]"
+            },
+            "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": "[parameters('osSettings').scripts]"
+                },
+                "protectedSettings": {
+                    "commandToExecute": "[concat('bash prep_db_instance.sh -e ', variables('environment'), ' -r ', parameters('dbType'), ' -s ', parameters('dbStorageKeyVaultParams').dbStorageSecretName , ' -n ',  parameters('dbStorageKeyVaultParams').dbDStorageName , ' -v ',  parameters('dbStorageKeyVaultParams').keyVaultName)]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
             "name": "[concat(variables('vmName'), copyindex(), '/install_postgresql')]",
-            "apiVersion": "2015-05-01-preview",
+            "apiVersion": "2015-06-15",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyindex())]"
