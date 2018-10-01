@@ -172,7 +172,7 @@
                 "protectedSettings": {
                     "storageAccountName": "[parameters('osSettings').storageAccess.storageName]",
                     "storageAccountKey": "[parameters('osSettings').storageAccess.storageKey]",
-                    "commandToExecute": "[concat('bash ', variables('prepDbScript'), ' && ', variables('installPgsqlScript'))]"
+                    "commandToExecute": "[concat('bash ', variables('installPgsqlScript'), ' && ', variables('prepDbScript'))]"
                 }
             }
         }
