@@ -20,6 +20,12 @@
         "subnet": {
             "type": "object"
         },
+        "vnetpeerprefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Allow DB Connections from this VNet Peer"
+            }
+        },
         "replicatorPassword": {
             "type": "securestring"
         },
@@ -50,7 +56,7 @@
         "vmCount": "[parameters('machineSettings').vmCount]",
         "environment": "[parameters('machineSettings').environment]",
         "prepDbScript": "[concat('prep_db_instance.sh -e ', variables('environment'), ' -r ', parameters('dbType'), ' -s ', parameters('dbStorageKeyVaultParams').dbStorageSecretName , ' -n ',  parameters('dbStorageKeyVaultParams').dbStorageName , ' -v ',  parameters('dbStorageKeyVaultParams').keyVaultName )]",
-        "installPgsqlScript": "[concat('install_postgresql.sh -m ', parameters('masterIpAddress'), ' -s ', parameters('subnet').prefix, ' -t ', parameters('dbType') , ' -p ', parameters('replicatorPassword') )]"
+        "installPgsqlScript": "[concat('install_postgresql.sh -m ', parameters('masterIpAddress'), ' -s ', parameters('subnet').prefix, ' -o ', parameters('vnetpeerprefix'), ' -t ', parameters('dbType') , ' -p ', parameters('replicatorPassword') )]"
     },
     "resources": [
         {
