@@ -172,10 +172,9 @@
                 "type": "CustomScript",
                 "typeHandlerVersion": "2.0",
                 "autoUpgradeMinorVersion": true,
-                "settings": {
-                    "fileUris": "[parameters('osSettings').scripts]"
-                },
+                "settings": {},
                 "protectedSettings": {
+                    "fileUris": "[parameters('osSettings').scripts]",
                     "storageAccountName": "[parameters('osSettings').storageAccess.storageName]",
                     "storageAccountKey": "[parameters('osSettings').storageAccess.storageKey]",
                     "commandToExecute": "[concat('bash ', variables('installPgsqlScript'), ' && bash ', variables('prepDbScript'))]"
